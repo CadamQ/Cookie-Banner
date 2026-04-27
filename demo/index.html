@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modern Cookie Banner Demo</title>
+    <link rel="stylesheet" href="../dist/cookie-banner.css">
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background:
+          radial-gradient(circle at top, rgba(14, 165, 233, 0.18), transparent 32%),
+          #020617;
+        color: #e2e8f0;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: transparent;
+      }
+
+      .shell {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 48px 0 160px;
+      }
+
+      .hero {
+        display: grid;
+        gap: 18px;
+        padding: 48px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        border-radius: 32px;
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.74));
+        box-shadow: 0 32px 80px rgba(2, 8, 23, 0.34);
+      }
+
+      .eyebrow {
+        color: #38bdf8;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2.5rem, 8vw, 5rem);
+        line-height: 0.95;
+      }
+
+      p {
+        margin: 0;
+        max-width: 70ch;
+        color: #aebcd0;
+        font-size: 1.05rem;
+        line-height: 1.7;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+        margin-top: 24px;
+      }
+
+      .card {
+        padding: 20px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        border-radius: 22px;
+        background: rgba(15, 23, 42, 0.72);
+      }
+
+      .card h2 {
+        margin: 0 0 8px;
+        font-size: 1rem;
+      }
+
+      .status {
+        margin-top: 24px;
+        padding: 18px 20px;
+        border: 1px solid rgba(50, 201, 255, 0.18);
+        border-radius: 18px;
+        background: rgba(8, 12, 19, 0.72);
+      }
+
+      .docs {
+        margin-top: 28px;
+        padding: 24px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        border-radius: 24px;
+        background: rgba(15, 23, 42, 0.68);
+      }
+
+      .docs h2 {
+        margin: 0 0 12px;
+        font-size: 1.25rem;
+      }
+
+      .docs h3 {
+        margin: 24px 0 10px;
+        font-size: 1rem;
+      }
+
+      .docs ul {
+        margin: 0;
+        padding-left: 20px;
+        color: #aebcd0;
+        line-height: 1.8;
+      }
+
+      pre {
+        margin: 12px 0 0;
+        padding: 16px;
+        overflow: auto;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        border-radius: 16px;
+        background: rgba(2, 6, 23, 0.7);
+      }
+
+      code {
+        color: #7dd3fc;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div class="eyebrow">Standalone OSS demo</div>
+        <h1>Consent that looks like it belongs in 2026.</h1>
+        <p>
+          This demo shows a self-rendered banner, a full preferences modal, and script gating for
+          analytics and marketing tags. The same files can be dropped into plain HTML sites,
+          React apps, CMS themes, or static sites.
+        </p>
+
+        <div class="cards">
+          <article class="card">
+            <h2>Equal choice</h2>
+            <p>Accept all, reject all, and granular preferences are all available from the first layer.</p>
+          </article>
+          <article class="card">
+            <h2>Script gating</h2>
+            <p>Optional tags stay blocked until the matching category is allowed.</p>
+          </article>
+          <article class="card">
+            <h2>One integration</h2>
+            <p>Load the CSS, import the JS, pass config, and reuse it across every site.</p>
+          </article>
+        </div>
+
+        <div id="consent-status" class="status">Consent state: waiting for a choice.</div>
+
+        <section class="docs" aria-labelledby="demo-docs-title">
+          <h2 id="demo-docs-title">How this actually blocks marketing and analytics</h2>
+          <p>
+            This banner only becomes real consent enforcement when optional tags are loaded through the
+            consent layer. If a script is added normally with a regular <code>&lt;script src="..."&gt;</code>,
+            it will load before the user has a choice.
+          </p>
+
+          <h3>The correct pattern</h3>
+          <ul>
+            <li>Use <code>type="text/plain"</code> so the browser does not execute the script immediately.</li>
+            <li>Add <code>data-consent-category="analytics"</code> or <code>data-consent-category="marketing"</code>.</li>
+            <li>The banner turns that blocked tag into a real script only after that category is accepted.</li>
+          </ul>
+
+          <pre><code>&lt;script
+  type="text/plain"
+  data-consent-category="marketing"
+  data-consent-src="https://example.com/meta-pixel-or-ads.js"
+  async&gt;
+&lt;/script&gt;</code></pre>
+
+          <h3>What happens if the user rejects marketing?</h3>
+          <ul>
+            <li>The consent state is saved with <code>marketing: false</code>.</li>
+            <li>Any blocked marketing script stays blocked.</li>
+            <li>Your ad or pixel code does not run.</li>
+          </ul>
+
+          <h3>Example noob-friendly setup</h3>
+          <pre><code>&lt;link rel="stylesheet" href="/cookie-banner.css"&gt;
+
+&lt;script
+  type="text/plain"
+  data-consent-category="analytics"
+  data-consent-src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"
+  async&gt;
+&lt;/script&gt;
+
+&lt;script type="text/plain" data-consent-category="analytics"&gt;
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXX');
+&lt;/script&gt;
+
+&lt;script type="module"&gt;
+  import { initCookieBanner } from "/cookie-banner.js";
+
+  initCookieBanner({
+    policyUrl: "/privacy-policy",
+    consentVersion: "2026-04"
+  });
+&lt;/script&gt;</code></pre>
+        </section>
+      </section>
+    </main>
+
+    <script type="text/plain" data-consent-category="analytics">
+      window.demoAnalyticsLoaded = true;
+      console.log('[demo] analytics tag loaded after consent');
+    </script>
+
+    <script type="text/plain" data-consent-category="marketing">
+      window.demoMarketingLoaded = true;
+      console.log('[demo] marketing tag loaded after consent');
+    </script>
+
+    <script type="module">
+      import { initCookieBanner } from "../dist/cookie-banner.js";
+
+      const status = document.getElementById('consent-status');
+      const banner = initCookieBanner({
+        policyUrl: '/privacy-policy',
+        consentVersion: '2026-04',
+        text: {
+          description:
+            'We use cookies to keep the experience secure, understand performance, remember your settings, and improve campaigns.'
+        },
+        onConsentReady(api) {
+          const render = (state) => {
+            status.textContent = 'Consent state: ' + JSON.stringify(state.categories) +
+              ' | analytics loaded: ' + Boolean(window.demoAnalyticsLoaded) +
+              ' | marketing loaded: ' + Boolean(window.demoMarketingLoaded);
+          };
+
+          render(api.getConsent());
+          api.onChange(render);
+        }
+      });
+
+      window.cookieBanner = banner;
+    </script>
+  </body>
+  </html>

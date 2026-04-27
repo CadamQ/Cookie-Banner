@@ -1,0 +1,29 @@
+{
+  "name": "modern-cookie-banner",
+  "version": "0.1.0",
+  "description": "Framework-agnostic EU cookie banner with consent preferences and script gating.",
+  "type": "module",
+  "main": "./dist/cookie-banner.js",
+  "module": "./dist/cookie-banner.js",
+  "exports": {
+    ".": "./dist/cookie-banner.js",
+    "./styles": "./dist/cookie-banner.css"
+  },
+  "files": [
+    "dist",
+    "demo",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "check": "node --check dist/cookie-banner.js"
+  },
+  "keywords": [
+    "cookie-banner",
+    "gdpr",
+    "consent",
+    "cmp",
+    "privacy"
+  ],
+  "license": "PolyForm-Noncommercial-1.0.0"
+}
